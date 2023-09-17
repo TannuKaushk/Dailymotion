@@ -16,7 +16,11 @@ protocol ImageService {
 final class ImageServiceImpl: ImageService {
     
     private let cachedImages = NSCache<NSURL, NSData>()
-    //MARK:- Returns the cached image if available, otherwise asynchronously loads and caches it.
+    
+    /// Returns the cached image if available, otherwise asynchronously loads and caches it
+    /// - Parameter
+    ///   - urlPath: URL Path from which thumbnail will be loaded.
+    /// - Returns: loaded data as Data Object
     func load(urlPath: String) async throws -> Data {
         guard let url = URL(string: urlPath) else {
             throw HTTPError.invalidRequest
@@ -34,4 +38,5 @@ final class ImageServiceImpl: ImageService {
             throw HTTPError.invalidRequest
         }
     }
+    
 }

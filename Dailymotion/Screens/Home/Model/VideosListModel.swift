@@ -29,7 +29,6 @@ struct ListData : Codable {
     let created_time : Int?
     
     enum CodingKeys: String, CodingKey {
-        
         case description = "description"
         case id = "id"
         case title = "title"

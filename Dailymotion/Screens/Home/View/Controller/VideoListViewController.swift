@@ -61,6 +61,7 @@ class VideoListViewController: UIViewController {
     }
     
     
+    /// This method sets up the necessary bindings between the view model and the view controller to handle loading indicators, error messages, and data reloading. 
     private func bindViewModel() {
         viewModel.didStartLoading = {
             LoadingView.show()
@@ -76,11 +77,12 @@ class VideoListViewController: UIViewController {
         viewModel.didReload = {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                
             }
         }
     }
+    
 }
+
 //MARK: - Tableview Delegate & Datasource
 extension VideoListViewController : UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
     

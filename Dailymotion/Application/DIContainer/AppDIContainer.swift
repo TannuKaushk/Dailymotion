@@ -15,6 +15,8 @@ final class AppDIContainer {
     lazy var imageDataTransferService: ImageService = ImageServiceImpl()
     
     // MARK: - DIContainers
+    /// Creates a specialized dependency container for managing NetworkService  and ImageService dependencies
+    /// - Returns: VideosDIContainer
     func makeVideosDIContainer() -> VideosDIContainer {
         let dependencies = VideosDIContainer.Dependencies(apiDataService: apiDataTransferService, imageDataService: imageDataTransferService)
         return VideosDIContainer(dependencies: dependencies)

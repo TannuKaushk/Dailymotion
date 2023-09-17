@@ -8,7 +8,6 @@
 import Foundation
 
 // MARK:- HTTP request method enum
-
 public enum  HTTPMethod  {
     case GET
     
@@ -22,14 +21,16 @@ public enum  HTTPMethod  {
 
 
 // MARK:- Network Request protocol to process the network request
-
 public protocol NetworkRequest : Encodable {
     var method: HTTPMethod {get}
     var serviceName: String {get}
     var querySeperator: String {get}
 }
 
+
 extension NetworkRequest {
+    /// Generates a query string representation of the current object conforming to the URL query string format.
+    /// - Returns: A query string representation of the object's properties, or `nil` if the HTTP request method is not GET or an error occurs.
     public func queryString() throws ->  String? {
         if method == .GET {
             let jsonData = try? JSONEncoder().encode(self)
@@ -44,14 +45,12 @@ extension NetworkRequest {
         return nil
     }
     
-    
     public var querySeperator: String {
         return "/"
     }
 }
 
 // MARK:- Network error enum
-
 public enum  HTTPError : Error {
     
     case invalidRequest
@@ -72,6 +71,7 @@ public enum  HTTPError : Error {
             return "The data received from the server was invalid. Please try again"
         }
     }
+    
     /// Error title
     public var errorTitle: String {
         return "Network Error"
@@ -80,16 +80,12 @@ public enum  HTTPError : Error {
 
 
 // MARK:- Protocol to process the nework request
-
 protocol NetworkService {
     /**
      Handles network request
      */
-    
     func http<T>(request: NetworkRequest) async throws -> T where T : Decodable
-    
 }
-
 
 
 final class NetworkServiceImpl : NetworkService {
@@ -99,7 +95,11 @@ final class NetworkServiceImpl : NetworkService {
     init(urlSession: URLSession = .shared) {
         self.session = urlSession
     }
-    //Generate URLRequest
+
+    /// Creates an URLRequest based on the provided `NetworkRequest`.
+    /// - Parameter
+    ///   - request: A `NetworkRequest` object containing information about the desired HTTP request.
+    /// - Returns: An `URLRequest` object representing the HTTP request, or throws an `HTTPError` if there are issues with constructing the request.
     private func createRequest(_ request : NetworkRequest) throws -> URLRequest {
         
         var urlString = Constant.baseURL + "/" + request.serviceName
@@ -123,6 +123,11 @@ final class NetworkServiceImpl : NetworkService {
         return urlrequest
     }
     
+    
+    /// Performs an HTTP request and decodes the response data into a specified type.
+    /// - Parameters:
+    ///   - request: A `NetworkRequest` object containing information about the HTTP request to be made.
+    /// - Returns: response data.
     func http<T>(request: NetworkRequest) async throws -> T where T : Decodable {
         do {
             let urlRequest = try self.createRequest(request)
@@ -144,6 +149,7 @@ final class NetworkServiceImpl : NetworkService {
         }
     }
 }
+
 
 extension Data {
     func decodeData<T: Decodable>() throws -> T {

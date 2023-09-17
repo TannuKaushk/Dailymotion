@@ -29,10 +29,12 @@ final class VideosDIContainer {
     func makeVideosListController() -> VideoListViewController {
         return VideoListViewController(viewModel: makeListViewModel())
     }
+    
     func makeListViewModel() -> ListViewModel {
         return VideoListViewModelImpl(service: VideosServiceDetail(networkService: dependencies.apiDataService), imageService: dependencies.imageDataService)
     }
 }
+
 extension VideosDIContainer: VideosFlowCoordinatorDependencies {
     
 }

@@ -52,6 +52,9 @@ final class VideoListViewModelImpl: ListViewModel {
         }
     }
     
+    /// Fetches data from a remote server for a specified page and updates the view model's state.
+    /// - Parameter
+    ///   - page: Page Number for which Data is to be Fetched
     private func fetchData(_ page: Int) async {
         do {
             async let videoData: VideosList = try await service.getVideoList(for: page)
